@@ -30,42 +30,101 @@ document.querySelectorAll(".style").forEach(b=>b.onclick=()=>{document.querySele
 function key(){return localStorage.getItem("eduHoloGroqKey")||""}function model(){return localStorage.getItem("eduHoloGroqModel")||"openai/gpt-oss-120b"}function keyui(){let k=key();$("key").classList.toggle("ok",!!k);$("key").classList.toggle("connected",!!k);$("key").classList.toggle("ok",!!k);$("keystate").innerHTML=k?'<div class="connected">🟢 Groq connected · key tersimpan lokal</div>':"";$("apikey").value=k;$("model").value=model();$("status").textContent=k?"🟢 Groq connected. Ready.":"🔒 Connect Groq lewat icon kunci."}keyui();
 $("key").onclick=e=>{$("pop").classList.toggle("show");e.stopPropagation()};$("pop").onclick=e=>e.stopPropagation();document.onclick=()=>{$("pop").classList.remove("show")};$("eye").onclick=()=>{$("apikey").type=$("apikey").type==="password"?"text":"password"};$("save").onclick=()=>{let k=$("apikey").value.trim();if(!k){toast("Masukkan API key dulu.");return}localStorage.setItem("eduHoloGroqKey",k);localStorage.setItem("eduHoloGroqModel",$("model").value.trim()||"openai/gpt-oss-120b");keyui();$("pop").classList.remove("show");toast("Groq key tersimpan 🔐")};$("remove").onclick=()=>{localStorage.removeItem("eduHoloGroqKey");localStorage.removeItem("eduHoloGroqModel");keyui();$("pop").classList.remove("show");toast("Key dihapus")};
 
-function sys(){let lang=$("lang").value==="id"?"Bahasa Indonesia":"English";return `You are EDU HOLO STUDIO MASTER LESSON ENGINE: an expert classroom teacher, curriculum designer, subject-matter explainer, educational visual director and cinematic storyboard director.
+function sys(){
+let lang=$("lang").value==="id"?"Bahasa Indonesia":"English";
+return `You are EDU HOLO STUDIO MASTER LESSON ENGINE: an expert teacher, curriculum designer and cinematic educational prompt director.
 
-MISSION: Turn the topic into a REAL TEACHING EXPERIENCE, not a generic prompt list. The teacher must actually teach: explain concepts, show steps, use concrete examples, connect cause/effect, demonstrate skills, correct misconceptions when useful, ask meaningful questions, and recap learning.
+GOAL: Create a REAL lesson, not generic filler. The teacher must actually teach the selected topic with accurate explanations, examples, demonstrations, cause/effect, steps and recap appropriate to the student's grade.
 
-INPUT: level=${$("level").value}; grade=${$("grade").value}; subject=${$("subject").value}; topic="${$("topic").value.trim()}"; mode=${$("mode").value}; scenes=${$("scenes").value}; visual style="${document.querySelector(".style.active").dataset.s}"; duration=EXACTLY 6 seconds/scene; output language=${lang}.
+INPUT:
+Level=${$("level").value}; Grade=${$("grade").value}; Subject=${$("subject").value}; Topic="${$("topic").value.trim()}"; Mode=${$("mode").value}; Scenes=${$("scenes").value}; Visual="${document.querySelector(".style.active").dataset.s}"; EXACT duration=6 seconds/scene; Output=${lang}.
 
-MANDATORY EDUCATIONAL REASONING:
-1. Identify what the student must truly understand.
-2. Build a logical progression from prerequisite/concrete idea to concept, example, application and recap as appropriate.
-3. Every scene MUST teach NEW information, a meaningful step, worked example, demonstration, application, misconception correction, question or recap that advances understanding.
-4. NEVER fill scenes with empty phrases such as "perhatikan hologram", "mari kita lihat", "sekarang kita gunakan contoh" unless immediately followed by real subject knowledge.
-5. Teacher dialogue must contain actual educational information, not repeated topic names.
-6. Adapt depth and vocabulary to the selected grade.
-7. For processes, teach the sequence. For formulas, explain variables and apply them. For skills, demonstrate step-by-step. For history, teach chronology/causes/consequences. For language, use real examples. For custom topics, infer a sound lesson structure.
-8. Do not invent facts.
+RULES:
+1. Identify the core knowledge the student must understand, then build a logical progression.
+2. EVERY scene must add real learning: a concept, step, example, demonstration, application, misconception correction, question or meaningful recap.
+3. NEVER use empty repeated dialogue such as "perhatikan hologram", "mari kita lihat", or "sekarang kita gunakan contoh" without immediately teaching actual subject knowledge.
+4. Adapt vocabulary, examples and depth to the grade. Be factually accurate.
+5. For processes, teach the sequence. For formulas, explain each part and solve an example. For skills, demonstrate step-by-step. For history, teach chronology, causes and consequences. For language, use real examples. For custom topics, infer a sensible lesson structure.
+6. Library topics and custom topics are both valid.
 
-HYBRID TOPIC: Topic may be selected from the built-in library OR typed by the user. Custom topics are valid. Reason from general knowledge and create the lesson; never say unsupported.
+HOLOGRAM:
+The hologram is an EDUCATIONAL TOOL, never decoration. Use purposeful actions such as reveal, zoom, process flow, growth/transformation, comparison, mechanism, diagram, timeline, cycle, worked example or step demonstration. Describe exactly WHAT appears, WHAT changes/moves and WHY. Never make it merely spin/glow/float unless that motion itself teaches something.
 
-HOLOGRAM ENGINE: The hologram is an educational instrument, never decoration. Choose a purposeful behavior: reveal, zoom-in, process flow, growth/transformation, comparison, mechanism, diagram, timeline, cycle, worked example, spatial model, highlighted component, or step demonstration. It MUST visualize the exact concept being taught. It must NOT merely spin, glow or float. State what appears, what changes, what moves and why.
+TEACHER:
+Describe meaningful hand gestures, gaze, pointing, demonstration and interaction with the hologram. The teacher must look like a real teacher, not a presenter reading filler.
 
-TEACHER ACTION: The teacher must gesture, point, demonstrate, compare, count, trace or otherwise interact with the lesson. Do not make the teacher stand still.
+CAMERA:
+Use purposeful teaching shots and controlled movement. Avoid distracting cinematic motion.
 
-CAMERA: Use purposeful teaching cinematography; no random movement.
+MASTER CHARACTER:
+The uploaded photo is the mandatory master identity reference. Every image/video prompt MUST instruct the downstream generator to use that same reference image. Preserve face, facial proportions, eyes, brows, nose, lips, skin tone, age, hijab/hair, outfit and distinctive accessories. If glasses are visible, glasses are NON-NEGOTIABLE and MUST remain. Never redesign or beautify the person. The HTML only creates prompts; the user supplies the same reference photo separately to the image/video generator.
 
-VISUAL STYLE: The selected style controls classroom/environment/lighting/materials. It never changes the teacher's identity. For Futuristic Hologram, teacher remains human and teaches in a futuristic classroom while meaningful holographic models support the lesson.
+VIDEO:
+Write an English production-ready prompt for EXACTLY 6 seconds. Include teacher action, educational hologram action, camera action, continuity, natural motion, voice direction and the EXACT spoken dialogue. Hologram movement must directly represent the lesson. No extra dialogue.
 
-MASTER CHARACTER: The uploaded image is the MASTER CHARACTER REFERENCE. Every image/video prompt MUST say to use the uploaded reference image as the mandatory identity source. Preserve face, proportions, eyes, brows, nose, lips, skin tone, age appearance, hairstyle/hijab, outfit identity and distinctive accessories. If glasses are visible, glasses are NON-NEGOTIABLE: preserve their shape, frame and position; never remove/replace them. Never redesign or beautify the person. The HTML only outputs prompts, so the same uploaded reference image must also be supplied to the downstream image/video generator.
-
-6-SECOND VIDEO RULE: Each scene is one educational beat. Keep dialogue naturally speakable in about 10–18 words when possible. Video prompt must be English and production-ready for exactly 6 seconds. Include teacher action, hologram action, camera action, continuity, voice direction and EXACT spoken dialogue. Hologram motion must represent the educational concept, not generic rotation. No extra dialogue.
-
-OUTPUT ONLY VALID JSON:
-{"lesson_title":"","lesson_summary":"","learning_objectives":[],"scenes":[{"scene_number":1,"title":"","what_student_learns":"","teacher_explanation":"","teacher_action":"","hologram_visualization":"","hologram_motion":"","camera_direction":"","voice_direction":"","image_prompt":"","video_prompt":"","knowledge_check":""}]}
-No markdown fences.`;
+OUTPUT ONLY valid JSON, no markdown:
+{"lesson_title":"","lesson_summary":"","learning_objectives":[],"scenes":[{"scene_number":1,"title":"","what_student_learns":"","teacher_explanation":"","teacher_action":"","hologram_visualization":"","hologram_motion":"","camera_direction":"","voice_direction":"","image_prompt":"","video_prompt":"","knowledge_check":""}]}`;
 }
 
-async function generate(){if(!key()){$("pop").classList.add("show");toast("Masukkan Groq API Key lewat 🔐");return}if(!$("topic").value.trim()){toast("Pilih atau tulis materi dulu.");return}$("generate").disabled=true;$("status").textContent="🧠 AI sedang menyusun lesson seperti guru...";try{let r=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key()},body:JSON.stringify({model:model(),temperature:.55,max_completion_tokens:12000,messages:[{role:"system",content:sys()},{role:"user",content:`Teach "${$("topic").value.trim()}" now. The lesson must contain real knowledge and purposeful visual demonstrations, not generic filler.`}],response_format:{type:"json_object"}})});let txt=await r.text();if(!r.ok)throw Error(txt);let j=JSON.parse(txt),c=j.choices?.[0]?.message?.content;if(!c)throw Error("Empty response");let d=JSON.parse(c);scenes=d.scenes||[];render(d);$("status").textContent=`🟢 Lesson ready · ${scenes.length} scenes · 6 sec/scene`;toast("Lesson berhasil dibuat ✨")}catch(e){console.error(e);$("status").textContent="❌ Generation failed. Cek key/model/koneksi.";toast("Gagal. Cek 🔐 API key.")}finally{$("generate").disabled=false}}
+async function generate(){
+if(!key()){$("pop").classList.add("show");toast("Masukkan Groq API Key lewat 🔐");return}
+if(!$("topic").value.trim()){toast("Pilih atau tulis materi dulu.");return}
+$("generate").disabled=true;
+$("status").textContent="🧠 AI sedang menyusun lesson seperti guru...";
+try{
+ const makeBody=(maxTokens)=>({
+  model:model(),
+  temperature:.45,
+  max_completion_tokens:maxTokens,
+  messages:[
+   {role:"system",content:sys()},
+   {role:"user",content:`Teach "${$("topic").value.trim()}" now. Create ${$("scenes").value} connected teaching beats. Every beat must contain real knowledge and a purposeful visual demonstration.`}
+  ],
+  response_format:{type:"json_object"}
+ });
+ let r=await fetch("https://api.groq.com/openai/v1/chat/completions",{
+  method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key()},
+  body:JSON.stringify(makeBody(4500))
+ });
+ let txt=await r.text();
+
+ if(r.status===413){
+  $("status").textContent="⚙️ Request terlalu besar. Menyesuaikan ukuran...";
+  r=await fetch("https://api.groq.com/openai/v1/chat/completions",{
+   method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key()},
+   body:JSON.stringify(makeBody(3000))
+  });
+  txt=await r.text();
+ }
+ if(!r.ok){
+  let detail=txt;try{detail=JSON.parse(txt)?.error?.message||txt}catch(e){}
+  if(r.status===401)throw Error("API_KEY_INVALID");
+  if(r.status===413)throw Error("REQUEST_TOO_LARGE");
+  if(r.status===429)throw Error("RATE_LIMIT");
+  throw Error(detail);
+ }
+ let j=JSON.parse(txt),c=j.choices?.[0]?.message?.content;
+ if(!c)throw Error("EMPTY_RESPONSE");
+ let d=JSON.parse(c);scenes=d.scenes||[];render(d);
+ $("status").textContent=`🟢 Lesson ready · ${scenes.length} scenes · 6 sec/scene`;
+ toast("Lesson berhasil dibuat ✨");
+}catch(e){
+ console.error(e);
+ if(e.message==="API_KEY_INVALID"){
+  $("status").textContent="❌ API Key tidak valid atau tidak memiliki akses.";
+  toast("API Key bermasalah. Cek 🔐");
+ }else if(e.message==="REQUEST_TOO_LARGE"){
+  $("status").textContent="⚠️ Request masih terlalu besar untuk limit Groq key ini. Coba 4–6 scene atau naikkan limit.";
+  toast("Request terlalu besar — bukan API key.");
+ }else if(e.message==="RATE_LIMIT"){
+  $("status").textContent="⏳ Groq sedang kena rate limit. Tunggu sebentar lalu coba lagi.";
+  toast("Rate limit Groq.");
+ }else{
+  $("status").textContent="❌ Generation gagal. Cek koneksi, model, atau API key.";
+  toast("Generation gagal. Lihat Console.");
+ }
+}finally{$("generate").disabled=false}
+}
 function render(d){$("result").innerHTML=`<div class="story"><div class="block"><div class="bt">Lesson Title</div><p><b>${esc(d.lesson_title)}</b></p></div><div class="block"><div class="bt">Lesson Summary</div><p>${esc(d.lesson_summary)}</p></div><div class="block"><div class="bt">Learning Objectives</div><ul style="font-size:13px;line-height:1.6">${(d.learning_objectives||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>${scenes.map(s=>`<article class="scene"><div class="scenehead"><strong>SCENE ${String(s.scene_number).padStart(2,"0")} · ${esc(s.title)}</strong><span class="tag">6 SEC · TEACHING BEAT</span></div><div class="scenebody"><div class="chips"><span class="chip">${$("level").value}</span><span class="chip">${$("grade").value}</span><span class="chip">${$("subject").value}</span></div><div class="block"><div class="bt">What Student Learns</div><p>${esc(s.what_student_learns)}</p></div><div class="block"><div class="bt">Teacher Explanation / Dialogue</div><div class="quote">${esc(s.teacher_explanation)}</div></div><div class="block"><div class="bt">Teacher Action</div><p>${esc(s.teacher_action)}</p></div><div class="block"><div class="bt">Hologram Visualization</div><p>${esc(s.hologram_visualization)}</p></div><div class="block"><div class="bt">Hologram Motion</div><p>${esc(s.hologram_motion)}</p></div><div class="block"><div class="bt">Camera Direction</div><p>${esc(s.camera_direction)}</p></div><div class="block"><div class="bt">Voice Direction</div><p>${esc(s.voice_direction)}</p></div><div class="two"><div class="block"><div class="bt">Image Prompt · English</div><div class="prompt">${esc(s.image_prompt)}<button class="copy" onclick="cp(this.parentElement.innerText)">Copy</button></div></div><div class="block"><div class="bt">Video Prompt · English · 6s</div><div class="prompt">${esc(s.video_prompt)}<button class="copy" onclick="cp(this.parentElement.innerText)">Copy</button></div></div></div><div class="block"><div class="bt">Knowledge Check</div><p>${esc(s.knowledge_check||"")}</p></div></div></article>`).join("")}</div>`}
 async function cp(t){await navigator.clipboard.writeText(t.replace(/Copy$/,"").trim());toast("Copied!")}$("generate").onclick=generate;$("copyall").onclick=()=>{if(!scenes.length)return toast("Belum ada storyboard.");cp(scenes.map(s=>`SCENE ${s.scene_number} — ${s.title}\n\nTEACHER DIALOGUE:\n${s.teacher_explanation}\n\nIMAGE PROMPT:\n${s.image_prompt}\n\nVIDEO PROMPT — 6 SEC:\n${s.video_prompt}`).join("\n\n"+"=".repeat(80)+"\n\n"))};$("print").onclick=()=>window.print();
 </script></body></html>
